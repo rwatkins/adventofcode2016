@@ -1,5 +1,4 @@
-use std::fs::File;
-use std::io::{self, Read};
+use super::util;
 
 #[derive(Debug,Clone)]
 enum Move {
@@ -14,13 +13,6 @@ type MoveSet = Vec<Moves>;
 
 #[derive(Debug,Clone)]
 struct Button(usize);
-
-fn file_contents(filename: &str) -> io::Result<String> {
-    let mut f = File::open(filename)?;
-    let mut s = String::new();
-    f.read_to_string(&mut s)?;
-    Ok(s)
-}
 
 fn moves_from_str(moves: &str) -> Moves {
     moves.chars().map(|c| match c {
@@ -111,7 +103,7 @@ fn stupid_keypad_next_button(current: &StupidKeypadButton, move_: &Move) -> Stup
 
 pub fn main() {
     println!("DAY 2");
-    let instructions_str = file_contents("day2_input.txt")
+    let instructions_str = util::read_file("day2_input.txt")
         .expect("Could not get file contents");
     let lines = instructions_str.lines();
     let move_set = lines.map(|l| moves_from_str(l)).collect::<MoveSet>();

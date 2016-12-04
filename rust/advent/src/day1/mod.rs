@@ -1,9 +1,8 @@
 mod path_tracker;
 
-use std::fs::File;
-use std::io::{self, Read};
 use std::str::FromStr;
 
+use super::util;
 use self::path_tracker::PathTracker;
 
 enum Axis {
@@ -65,13 +64,6 @@ fn distance(steps: &[Step], path_tracker: &mut PathTracker) -> i32 {
     x.abs() + y.abs()
 }
 
-fn file_contents(filename: &str) -> io::Result<String> {
-    let mut f = File::open(filename)?;
-    let mut s = String::new();
-    f.read_to_string(&mut s)?;
-    Ok(s)
-}
-
 // Converts a string like "L1, R2, R5" into a collection of Steps
 
 fn steps_from_str(s: &str) -> Vec<Step> {
@@ -88,7 +80,7 @@ fn steps_from_str(s: &str) -> Vec<Step> {
 
 pub fn main() {
     println!("DAY 1");
-    let s = file_contents("day1_input.txt").expect("Error getting file contents");
+    let s = util::read_file("day1_input.txt").expect("Error getting file contents");
     let steps = steps_from_str(&s);
     let mut path_tracker = PathTracker::new();
     let dist = distance(&steps, &mut path_tracker);
