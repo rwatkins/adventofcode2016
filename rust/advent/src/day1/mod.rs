@@ -88,7 +88,7 @@ fn steps_from_str(s: &str) -> Vec<Step> {
 
 pub fn main() {
     println!("DAY 1");
-    let s = file_contents("input.txt").expect("Error getting file contents");
+    let s = file_contents("day1_input.txt").expect("Error getting file contents");
     let steps = steps_from_str(&s);
     let mut path_tracker = PathTracker::new();
     let dist = distance(&steps, &mut path_tracker);
