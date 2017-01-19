@@ -1,5 +1,8 @@
 use std::collections::HashSet;
 
+// PathTracker is used to keep track of every point visited on a grid,
+// and determines which point was first visited twice.
+
 pub struct PathTracker {
     visited: HashSet<(i32, i32)>,
     visited_multi: Vec<(i32, i32)>,
@@ -12,6 +15,10 @@ impl PathTracker {
             visited_multi: vec![],
         }
     }
+
+    // Takes a starting coordinate and an ending coordinate, and tracks
+    // all of the coordinates in between both points. This is later used
+    // to determine the first point that is visited twice.
 
     pub fn add_path(&mut self, a: (i32, i32), b: (i32, i32)) {
         let (a_x, a_y) = a;
@@ -54,9 +61,8 @@ impl PathTracker {
         self.first_point_visited_twice().map(|&(x, y)| x.abs() + y.abs())
     }
 
-    fn first_point_visited_twice(&self) -> Option<&(i32, i32)> {
-        self.visited_multi.first()
-    }
+    // Inserts (x, y) into visited. Optionally inserts into
+    // visited_multi if it already exists in visited.
 
     fn add_point(&mut self, x: i32, y: i32) {
         let point = (x, y);
@@ -65,5 +71,9 @@ impl PathTracker {
         } else {
             self.visited.insert(point);
         }
+    }
+
+    fn first_point_visited_twice(&self) -> Option<&(i32, i32)> {
+        self.visited_multi.first()
     }
 }

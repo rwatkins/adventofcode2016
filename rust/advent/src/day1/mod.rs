@@ -24,6 +24,19 @@ enum Turn {
 #[derive(Debug)]
 struct Step(Turn, i32);
 
+
+// Iterates over steps and traces the path taken along a grid to reach
+// the final destination.
+//
+// A step represents in which direction we should turn from the current
+// direction we're facing, and how many blocks we should walk in that
+// direction.
+//
+// For example, when starting from (0, 0) and facing in the positive
+// direction along the Y axis, a sequence of steps like [R4, R5, L8]
+// leaves us at (-4, -5) and facing in the negative direction along the
+// X axis.
+
 fn distance(steps: &[Step], path_tracker: &mut PathTracker) -> i32 {
     let mut x: i32 = 0;
     let mut y: i32 = 0;
@@ -32,6 +45,7 @@ fn distance(steps: &[Step], path_tracker: &mut PathTracker) -> i32 {
 
     for step in steps {
         let (old_x, old_y) = (x, y);
+
         match (cur_axis, cur_direction, step) {
             (Axis::X, Direction::Pos, &Step(Turn::Left, i)) |
             (Axis::X, Direction::Neg, &Step(Turn::Right, i)) => {
@@ -58,13 +72,15 @@ fn distance(steps: &[Step], path_tracker: &mut PathTracker) -> i32 {
                 x += i;
             }
         }
+
         path_tracker.add_path((old_x, old_y), (x, y));
     }
 
     x.abs() + y.abs()
 }
 
-// Converts a string like "L1, R2, R5" into a collection of Steps
+
+// Converts a string like "L1, R2, R5" into a collection of Steps.
 
 fn steps_from_str(s: &str) -> Vec<Step> {
     s.trim().split(", ")
@@ -77,6 +93,7 @@ fn steps_from_str(s: &str) -> Vec<Step> {
         })
         .collect::<Vec<Step>>()
 }
+
 
 pub fn main() {
     println!("DAY 1");
